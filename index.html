@@ -1,4 +1,9 @@
-
+<script src="./jquery-2.1.3.min.js"></script>
+<script src="./ahoy.js"></script>
+<script type="text/javascript">
+	ahoy.reset();
+	ahoy.debug();
+</script>
 <form id        =  "uploadForm"
      enctype   =  "multipart/form-data"
      action    =  "/api/upload"
@@ -7,3 +12,4 @@
 <input type="file" name="userPhoto" />
 <input type="submit" value="Upload Image" name="submit">
 </form>
+<button onclick="ahoy.track('name', 'properties');">Click</button>

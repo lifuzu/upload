@@ -4,6 +4,7 @@ var express=require("express");
 var multer  = require('multer');
 var app=express();
 var done=false;
+app.use(express.static(__dirname + '/public'));
 
 /*Configure the multer.*/
 
@@ -36,6 +37,19 @@ app.post('/api/upload',function(req,res){
     res.end("File uploaded.");
   }
 });
+
+app.post('/ahoy/visits', function(req, res) {
+  if (req) {
+    // console.log(req.route.stack);
+    res.end("Start to visit.");
+  }
+})
+app.post('/ahoy/events', function(req, res) {
+  if (req) {
+    console.log(req.route.stack);
+    res.end("Button clicked.");
+  }
+})
 
 /*Run the server.*/
 app.listen(3000,function(){
