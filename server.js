@@ -10,7 +10,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(multer({ dest: './uploads/',
  rename: function (fieldname, filename) {
-    return filename+Date.now();
+    return filename+'-'+Date.now();
   },
   onFileUploadStart: function (file) {
     console.log(file.originalname + ' is starting ...')
@@ -34,7 +34,7 @@ app.post('/api/upload',function(req,res){
   }
   if(done==true){
     console.log(req.files);
-    res.end("File uploaded.");
+    res.json(req.files);
   }
 });
 
@@ -52,6 +52,6 @@ app.post('/ahoy/events', function(req, res) {
 })
 
 /*Run the server.*/
-app.listen(3000,function(){
-    console.log("Working on port 3000");
+app.listen(3100,function(){
+    console.log("Working on port 3100");
 });
