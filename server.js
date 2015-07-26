@@ -1,10 +1,17 @@
 /*Define dependencies.*/
 
 var express=require("express");
+var timeout = require('connect-timeout');
 var multer  = require('multer');
 var app=express();
 var done=false;
 app.use(express.static(__dirname + '/public'));
+app.use(timeout('5s'));
+
+
+function haltOnTimedout(req, res, next){
+  if (!req.timedout) next();
+}
 
 /*Configure the multer.*/
 
@@ -20,6 +27,8 @@ app.use(multer({ dest: './uploads/',
     done=true;
   }
 }));
+
+app.use(haltOnTimedout);
 
 /*Handling routes.*/
 
