@@ -63,6 +63,6 @@ app.post('/ahoy/events', function(req, res) {
 })
 
 /*Run the server.*/
-app.listen(8100,function(){
-    console.log("Working on port 8100");
+app.listen(3100,function(){
+    console.log("Working on port 3100");
 });
