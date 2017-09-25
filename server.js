@@ -1,34 +1,33 @@
 /*Define dependencies.*/
 
-var express=require("express");
-// var timeout = require('connect-timeout');
-var multer  = require('multer');
-var app=express();
-var done=false;
+const express = require("express");
+const bodyParser = require("body-parser");
+const multer = require('multer');
+const path = require('path');
+const mkdirp = require('mkdirp');
+const app = express();
+
+app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
-// app.use(timeout('5s'));
-
-
-function haltOnTimedout(req, res, next){
-  if (!req.timedout) next();
-}
 
 /*Configure the multer.*/
 
-app.use(multer({ dest: './uploads/',
- rename: function (fieldname, filename) {
-    return filename+'-'+Date.now();
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    const dir = path.join('./uploads', file.mimetype);
+    mkdirp(dir, function (err) {
+      if (err) console.log(err);
+      else callback(null, dir);
+    });
+    
   },
-  onFileUploadStart: function (file) {
-    console.log(file.originalname + ' is starting ...')
-  },
-  onFileUploadComplete: function (file) {
-    console.log(file.fieldname + ' uploaded to  ' + file.path)
-    done=true;
+  filename: function (req, file, callback) {
+    callback(null, file.originalname.substring(0, 4) + '-' + Date.now());
   }
-}));
+});
+// max upload 9 files
+const upload = multer({ storage : storage }).array('file', 9);
 
-// app.use(haltOnTimedout);
 
 /*Handling routes.*/
 
@@ -36,17 +35,20 @@ app.get('/',function(req,res){
   res.sendFile(__dirname + "/index.html");
 });
 
-app.post('/api/upload',function(req,res){
-  if (req.body.url) {
-    console.log(req.body.url);
-    res.end("Url uploaded.");
-  }
-  if(done==true){
-    console.log(req.files);
+app.post('/api/file_upload',function(req,res){
+  upload(req, res, function(err) {
+    // console.log(req.body);
+    // console.log(req.files);
+    if(err) {
+      // console.error(err);
+      console.log(err);
+      return res.end("Error uploading file.");
+    }
     res.json(req.files);
-  }
+  });
 });
 
+// ahoy
 app.post('/ahoy/visits', function(req, res) {
   if (req) {
     // console.log(req.route.stack);
@@ -61,6 +63,6 @@ app.post('/ahoy/events', function(req, res) {
 })
 
 /*Run the server.*/
-app.listen(3100,function(){
-    console.log("Working on port 3100");
+app.listen(8100,function(){
+    console.log("Working on port 8100");
 });
