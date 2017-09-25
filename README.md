@@ -18,7 +18,17 @@ $ docker images
 # docker history weimed/file_upload:latest
 ```
 
+### Debug the instance and/or server
+```
+$ docker ps -a
+$ docker logs file_upload
+$ docker exec -it file_upload sh
+```
+
 ### Push the image to Docker Hub
 ```
 $ docker push weimed/file_upload:latest
 ```
+
+### Reference:
+https://github.com/lifuzu/upload/blob/master/README.md
