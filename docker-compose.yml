@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  file_upload:
+    container_name: "file_upload"
+    hostname: "file_upload"
+    image: weimed/file_upload:latest
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./file_upload:/usr/src/file_upload/uploads
+    ports:
+      - 8100:3100
